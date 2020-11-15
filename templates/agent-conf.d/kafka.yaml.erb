@@ -413,6 +413,146 @@ init_config:
             alias: kafka.replication.max_lag
 
     #
+    # Brokers: Per Topic Metrics (v0.9.0.x+)
+    #
+    - include:
+        domain: 'kafka.server'
+        bean_regex: 'kafka\.server:type=BrokerTopicMetrics,name=MessagesInPerSec,topic=.*'
+        attribute:
+          Count:
+            metric_type: rate
+            alias: kafka.topic.messages_in.rate
+    - include:
+        domain: 'kafka.server'
+        bean_regex: 'kafka\.server:type=BrokerTopicMetrics,name=BytesOutPerSec,topic=.*'
+        attribute:
+          Count:
+            metric_type: rate
+            alias: kafka.topic.net.bytes_out.rate
+    - include:
+        domain: 'kafka.server'
+        bean_regex: 'kafka\.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=.*'
+        attribute:
+          Count:
+            metric_type: rate
+            alias: kafka.topic.net.bytes_in.rate
+    - include:
+        domain: 'kafka.server'
+        bean_regex: 'kafka\.server:type=BrokerTopicMetrics,name=BytesRejectedPerSec,topic=.*'
+        attribute:
+          Count:
+            metric_type: rate
+            alias: kafka.topic.net.bytes_rejected.rate
+    #
+    # Producers: Per Topic Metrics
+    #
+    - include:
+        domain: 'kafka.producer'
+        bean_regex: 'kafka\.producer:type=producer-topic-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          byte-rate:
+            metric_type: gauge
+            alias: kafka.producer.bytes_out
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.producer'
+        bean_regex: 'kafka\.producer:type=producer-topic-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          record-send-rate:
+            metric_type: gauge
+            alias: kafka.producer.record_send_rate
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.producer'
+        bean_regex: 'kafka\.producer:type=producer-topic-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          compression-rate:
+            metric_type: gauge
+            alias: kafka.producer.compression_rate
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.producer'
+        bean_regex: 'kafka\.producer:type=producer-topic-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          record-retry-rate:
+            metric_type: gauge
+            alias: kafka.producer.record_retry_rate
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.producer'
+        bean_regex: 'kafka\.producer:type=producer-topic-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          record-error-rate:
+            metric_type: gauge
+            alias: kafka.producer.record_error_rate
+        tags:
+          client: $1
+          topic: $2
+
+    #
+    # Consumers: Per Topic Metrics
+    #
+
+    - include:
+        domain: 'kafka.consumer'
+        bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          fetch-size-avg:
+            metric_type: gauge
+            alias: kafka.consumer.fetch_size_avg
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.consumer'
+        bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          fetch-size-max:
+            metric_type: gauge
+            alias: kafka.consumer.fetch_size_max
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.consumer'
+        bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          bytes-consumed-rate:
+            metric_type: gauge
+            alias: kafka.consumer.bytes_consumed
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.consumer'
+        bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          records-per-request-avg:
+            metric_type: gauge
+            alias: kafka.consumer.records_per_request_avg
+        tags:
+          client: $1
+          topic: $2
+    - include:
+        domain: 'kafka.consumer'
+        bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=(.*?),topic=(.*?)(?:,|$)'
+        attribute:
+          records-consumed-rate:
+            metric_type: gauge
+            alias: kafka.consumer.records_consumed
+        tags:
+          client: $1
+          topic: $2
+
+    #
     # Log flush stats
     #
     - include:
