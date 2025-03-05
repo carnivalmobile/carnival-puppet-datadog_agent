@@ -45,7 +45,7 @@ class datadog_agent::redhat::agent6(
 
     yumrepo {'datadog6':
       enabled  => 1,
-      gpgcheck => 1,
+      gpgcheck => 0,
       gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
       descr    => 'Datadog, Inc.',
       baseurl  => $baseurl,
